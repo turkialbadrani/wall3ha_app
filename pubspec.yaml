@@ -1,0 +1,35 @@
+name: wall3ha_app
+description: تطبيق ولّعها 🔥 — مولد ردود ذكية وطقطقة في القروبات
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.2.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  http: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  # لو حاب تضيف خط حلو للتطبيق:
+  # fonts:
+  #   - family: Cairo
+  #     fonts:
+  #       - asset: assets/fonts/Cairo-Regular.ttf
+  #       - asset: assets/fonts/Cairo-Bold.ttf
+  #         weight: 700
+
+  # لو حاب تضيف صور (مثلا صور Premium — أيقونة — صور داخل القروب):
+  # assets:
+  #   - assets/images/
