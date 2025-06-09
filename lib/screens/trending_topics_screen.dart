@@ -35,7 +35,8 @@ class _TrendingTopicsScreenState extends State<TrendingTopicsScreen> {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $openaiApiKey',
+          'Authorization': 'Bearer ${ApiKeys.openaiApiKey}',
+
         },
         body: jsonEncode({
           'model': 'gpt-4o',
