@@ -122,7 +122,7 @@ class _TrendingTopicsScreenState extends State<TrendingTopicsScreen> {
                     ),
                   ),
                   SizedBox(height: 8),
-                  ReplyActionsWidget(
+    // ReplyActionsWidget(
                     replyText: generatedReply,
                     onRegenerate: () {
                       // تكرار آخر موضوع تم الضغط عليه:
