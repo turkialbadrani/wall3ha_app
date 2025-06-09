@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:wall3ha_app/config/api_keys.dart';
-import 'package:wall3ha_app/widgets/reply_actions_widget.dart';
+import '../config/api_keys.dart';
 
 class AnalyzeScreen extends StatefulWidget {
   @override
@@ -34,31 +33,14 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> {
           'messages': [
             {
               'role': 'system',
-              'content': '''
-أنت محلل نفسي محترف.
-
-مهمتك: تحليل النص التالي بشكل ذكي.
-
-قدم لي النتائج التالية:
-
-1️⃣ الحالة الشعورية للمتحدث (سعيد / حزين / غاضب / متوتر / واثق / غير ذلك).  
-2️⃣ هل فيه عدوانية خفية؟  
-3️⃣ هل فيه لهجة طقطقة أو سخرية؟  
-4️⃣ هل فيه محاولة إخفاء مشاعر؟  
-5️⃣ هل فيه تعبير عن اهتمام أو عاطفة؟  
-6️⃣ تعليق عام: كيف يبدو هذا الشخص بناءً على النص؟
-
-✅ استخدم لغة بسيطة وسهلة.
-
-✅ لا تكتب عنوان — فقط ابدأ بالتحليل مباشرة.
-'''
+              'content': 'أنت محلل نفسي محترف. أعطني تحليل نفسي عميق للنص التالي...',
             },
             {
               'role': 'user',
               'content': 'النص:\n${textController.text}',
             },
           ],
-          'max_tokens': 300,
+          'max_tokens': 200,
           'temperature': 0.6,
         }),
       );
@@ -115,28 +97,19 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> {
               ),
               SizedBox(height: 16),
               analysisResult.isNotEmpty
-                  ? Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      analysisResult,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  ? Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  analysisResult,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(height: 8),
-                  ReplyActionsWidget(
-                    onRegenerate: analyzeText,
-                    replyText: analysisResult,
-                  ),
-                ],
+                ),
               )
                   : Container(),
             ],

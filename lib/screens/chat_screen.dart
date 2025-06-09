@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:wall3ha_app/config/api_keys.dart';
+import '../config/api_keys.dart';
 
 class ChatScreen extends StatefulWidget {
   @override
@@ -27,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${ApiKeys.openaiApiKey}',
+          'Authorization': 'Bearer $openaiApiKey',
         },
         body: jsonEncode({
           'model': 'gpt-4o',
@@ -35,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
             {
               'role': 'system',
               'content':
-              'انت مساعد ذكي — تكتب ردود طقطقة بين شخصين بطريقة فكاهية، قوية، وفيها لمسة مرحة.'
+              'انت مساعد ذكي — تكتب ردود طقطقة بين شخصين بطريقة فكاهية، قوية، وفيها لمسة مرحة.',
             },
             {
               'role': 'user',

@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:wall3ha_app/config/api_keys.dart';
-import 'package:wall3ha_app/widgets/reply_actions_widget.dart';
+import '../config/api_keys.dart';
 
 class UnifiedDialogueScreen extends StatefulWidget {
   @override
@@ -55,33 +54,22 @@ class _UnifiedDialogueScreenState extends State<UnifiedDialogueScreen> {
           'messages': [
             {
               'role': 'system',
-              'content': '''
-أنت مساعد ذكي جدًا.
-
-مهمتك: توليد رد واقعي جدًا، ممتع ومناسب للسياق.
-
-- العلاقة بين الطرف الأول: "$person1Relation"
-- العلاقة بين الطرف الثاني: "$person2Relation"
-- النبرة المطلوبة: "$tone"
-
-تحليل نية الحوار: هل الرد المطلوب يكون تهدئة / تصعيد / طقطقة / غزل / دعم / استفزاز؟ اختر الأنسب بناءً على النص.
-
-نص الحوار:
-
-- كلام الطرف الأول: "${person1TextController.text}"
-- كلام الطرف الثاني (إن وُجد): "${person2TextController.text}"
-
-اكتب الرد المناسب كأنك شخص حقيقي يتحدث باللهجة العامية، مع استخدام تعبيرات طبيعية، وEmojis لو مناسب.
-
-الرد يجب أن يكون ممتع للقراءة + له طابع شخصي.
-'''
+              'content':
+              'أنت مساعد ذكي. حلل الحوار بين طرفين حسب المعلومات التالية:\n\n'
+                  '- علاقة الطرف الأول بالمستخدم: $person1Relation\n'
+                  '- علاقة الطرف الثاني بالمستخدم: $person2Relation\n'
+                  '- النبرة المطلوبة: $tone\n\n'
+                  'النص:\n'
+                  '- كلام الطرف الأول: ${person1TextController.text}\n'
+                  '- كلام الطرف الثاني: ${person2TextController.text}\n\n'
+                  'اكتب رد مناسب جدًا يعكس العلاقة والنبرة، ويكون ممتع للقراءة باللغة العربية.'
             },
             {
               'role': 'user',
               'content': 'رجاءً أعطني الرد الآن.',
             },
           ],
-          'max_tokens': 400,
+          'max_tokens': 200,
           'temperature': 0.7,
         }),
       );
@@ -256,28 +244,19 @@ class _UnifiedDialogueScreenState extends State<UnifiedDialogueScreen> {
               ),
               SizedBox(height: 16),
               generatedReply.isNotEmpty
-                  ? Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      generatedReply,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                  ? Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  generatedReply,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(height: 8),
-                  ReplyActionsWidget(
-                    onRegenerate: generateReply,
-                    replyText: generatedReply,
-                  ),
-                ],
+                ),
               )
                   : Container(),
             ],
