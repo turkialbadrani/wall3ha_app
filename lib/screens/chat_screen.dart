@@ -27,7 +27,7 @@ class _ChatScreenState extends State<ChatScreen> {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $openaiApiKey',
+          'Authorization': 'Bearer ${ApiKeys.openaiApiKey}',
         },
         body: jsonEncode({
           'model': 'gpt-4o',
@@ -35,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
             {
               'role': 'system',
               'content':
-              'انت مساعد ذكي — تكتب ردود طقطقة بين شخصين بطريقة فكاهية، قوية، وفيها لمسة مرحة.',
+              'انت مساعد ذكي — تكتب ردود طقطقة بين شخصين بطريقة فكاهية، قوية، وفيها لمسة مرحة.'
             },
             {
               'role': 'user',

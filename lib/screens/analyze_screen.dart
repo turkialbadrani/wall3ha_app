@@ -26,14 +26,15 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> {
         url,
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $openaiApiKey',
+          'Authorization': 'Bearer ${ApiKeys.openaiApiKey}',
         },
         body: jsonEncode({
           'model': 'gpt-4o',
           'messages': [
             {
               'role': 'system',
-              'content': 'أنت محلل نفسي محترف. أعطني تحليل نفسي عميق للنص التالي...',
+              'content':
+              'أنت محلل نفسي محترف. أعطني تحليل نفسي عميق للنص التالي...',
             },
             {
               'role': 'user',
