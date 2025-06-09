@@ -1,8 +1,9 @@
+// lib/screens/trending_topics_screen.dart
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:wall3ha_app/config/api_keys.dart';
-import 'package:wall3ha_app/widgets/reply_actions_widget.dart';
+import '../config/api_keys.dart';
 
 class TrendingTopicsScreen extends StatefulWidget {
   @override
@@ -11,17 +12,17 @@ class TrendingTopicsScreen extends StatefulWidget {
 
 class _TrendingTopicsScreenState extends State<TrendingTopicsScreen> {
   final List<String> trendingTopics = [
-    'الهلال والنصر امس 🔥',
-    'نتائج الثانوية العامة 📚',
-    'خبر ترند عن فنان مشهور 🎤',
-    'جدال على تويتر عن القيادة',
-    'فوز ريال مدريد بدوري الأبطال 🏆',
+    'مباراة الهلال والنصر اليوم',
+    'ترند اليوم في تويتر',
+    'قضية المشهور فلان',
+    'ايفون الجديد',
+    'اغنية ضاربة في السناب',
   ];
 
   String generatedReply = '';
   bool isLoading = false;
 
-  void generateResponse(String topic) async {
+  Future<void> generateReply(String topic) async {
     final url = Uri.parse('https://api.openai.com/v1/chat/completions');
 
     setState(() {
@@ -41,24 +42,16 @@ class _TrendingTopicsScreenState extends State<TrendingTopicsScreen> {
           'messages': [
             {
               'role': 'system',
-              'content': '''
-مهمتك: تولد رد ساخر/ذكي/فكاهي عن موضوع ترند في القروبات.
-
-- لا تشرح الموضوع.
-- اكتب رد جاهز كأن المستخدم يرسله للقروب.
-- باللهجة العامية.
-- فيها طقطقة أو ردة فعل ممتعة.
-
-لا تكتب مقدمة — فقط الرد النهائي.
-'''
+              'content':
+              'أنت كاتب محتوى ذكي — اكتب رد طريف أو مثير أو تعليق قوي على الترند التالي باللهجة العامية السعودية:',
             },
             {
               'role': 'user',
-              'content': 'الموضوع:\n$topic',
+              'content': topic,
             },
           ],
           'max_tokens': 150,
-          'temperature': 0.8,
+          'temperature': 0.7,
         }),
       );
 
@@ -71,7 +64,8 @@ class _TrendingTopicsScreenState extends State<TrendingTopicsScreen> {
         });
       } else {
         setState(() {
-          generatedReply = '❌ خطأ في الاتصال. [${response.statusCode}]';
+          generatedReply =
+          '❌ حصل خطأ في الاتصال بـ GPT API. [Status code: ${response.statusCode}]';
         });
       }
     } catch (e) {
@@ -85,16 +79,6 @@ class _TrendingTopicsScreenState extends State<TrendingTopicsScreen> {
     }
   }
 
-  Widget buildTopicButton(String topic) {
-    return ListTile(
-      title: Text(topic),
-      trailing: ElevatedButton(
-        onPressed: () => generateResponse(topic),
-        child: Text('🗯️ ولّعها'),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,33 +89,39 @@ class _TrendingTopicsScreenState extends State<TrendingTopicsScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            ...trendingTopics.map(buildTopicButton).toList(),
-            SizedBox(height: 20),
-            if (generatedReply.isNotEmpty)
-              Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[900],
-                      borderRadius: BorderRadius.circular(8),
+            Expanded(
+              child: ListView.builder(
+                itemCount: trendingTopics.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(trendingTopics[index]),
+                    trailing: ElevatedButton(
+                      onPressed: isLoading
+                          ? null
+                          : () => generateReply(trendingTopics[index]),
+                      child: Text('🗯️ ولّعها'),
                     ),
-                    child: Text(
-                      generatedReply,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(height: 8),
-    // ReplyActionsWidget(
-                    replyText: generatedReply,
-                    onRegenerate: () {
-                      // تكرار آخر موضوع تم الضغط عليه:
-                      generateResponse(trendingTopics.lastWhere((t) => generatedReply.contains(t), orElse: () => trendingTopics[0]));
-                    },
-                  ),
-                ],
+                  );
+                },
               ),
+            ),
+            SizedBox(height: 16),
             if (isLoading) CircularProgressIndicator(),
+            if (generatedReply.isNotEmpty)
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey[900],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  generatedReply,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
           ],
         ),
       ),
